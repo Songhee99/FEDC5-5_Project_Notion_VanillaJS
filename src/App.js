@@ -10,14 +10,14 @@ export default function App({ $target }) {
   const editorBox = new EditorBox({
     $target,
     onChange: () => {
-      documentBox.setState();
+      documentBox.fetchDocuments();
     },
   });
 
   this.route = async () => {
     const { pathname } = window.location;
 
-    documentBox.setState();
+    documentBox.fetchDocuments();
 
     if (pathname === "/") editorBox.setState();
     else if (pathname.indexOf("/documents/") === 0) {

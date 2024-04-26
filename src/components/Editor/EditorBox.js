@@ -21,15 +21,14 @@ export default function EditorBox({ $target, onChange }) {
 
       timer = setTimeout(async () => {
         if (this.state.id === "new") {
-          const res = await request("/documents", {
-            method: "POST",
-            body: JSON.stringify({ title, parent: null }),
-          });
-
-          if (res) {
+          try {
+            const res = await request("/documents", {
+              method: "POST",
+              body: JSON.stringify({ title, parent: null }),
+            });
             this.state = res;
             push(`/documents/${this.state.id}`);
-          } else {
+          } catch (e) {
             throw new Error("Post method 실패");
           }
         } else {

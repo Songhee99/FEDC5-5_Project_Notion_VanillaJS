@@ -11,6 +11,9 @@ export const request = async (url, options = {}) => {
     });
     if (res.ok) return await res.json();
 
-    throw new Error("API query error");
-  } catch (e) {}
+    throw new Error("API query error: ${res.status}");
+  } catch (e) {
+    console.error(e.message);
+    throw e;
+  }
 };

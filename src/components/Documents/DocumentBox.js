@@ -16,7 +16,7 @@ export default function DocumentBox({ $target }) {
         method: "POST",
         body: JSON.stringify({ parent, title }),
       });
-      this.setState();
+      this.fetchDocuments();
     },
 
     onDelete: async ({ id }) => {
@@ -24,10 +24,11 @@ export default function DocumentBox({ $target }) {
         method: "DELETE",
       });
       push("/");
+      this.fetchDocuments();
     },
   });
 
-  this.setState = async () => {
+  this.fetchDocuments = async () => {
     const documents = await request("/documents");
     documentList.setState({ document: documents });
   };
