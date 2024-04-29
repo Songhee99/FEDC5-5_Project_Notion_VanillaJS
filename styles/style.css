@@ -48,7 +48,6 @@ li {
   overflow-y: auto;
   max-height: calc(100vh - 6rem);
 }
-
 .document-list-container::-webkit-scrollbar {
   display: none;
 }
@@ -80,6 +79,10 @@ li {
   padding: 0.7rem 1.1rem;
   border-radius: 0.5rem;
   font-size: medium;
+}
+#newPage:hover {
+  background-color: #6da1c06e;
+  cursor: pointer;
 }
 
 #emptyPage {
