@@ -6,9 +6,13 @@ export default function DocumentList({
   onCreate,
   onDelete,
 }) {
+  const $documentListContainer = document.createElement("div");
+  $documentListContainer.className = "document-list-container"; // 스크롤을 위한 컨테이너
+  $target.appendChild($documentListContainer);
+
   const $documentList = document.createElement("div");
   $documentList.className = "document-list";
-  $target.appendChild($documentList);
+  $documentListContainer.appendChild($documentList);
 
   this.state = initialState;
 
@@ -55,11 +59,11 @@ export default function DocumentList({
     if (this.state.document && this.state.document.length > 0) {
       $documentList.innerHTML =
         this.setDepth(this.state.document) +
-        `<button name="addButton" id="newPage">새 페이지 생성</button>`;
+        `<button name="addButton" id="newPage">새 페이지 만들기</button>`;
     } else {
       $documentList.innerHTML = `
-        <span id="emptyPage">페이지가 없습니다 :(</span>
-        <button name="addButton" id="newPage">새 페이지 생성</button>
+        <span id="emptyPage">페이지가 없어요 😢</span>
+        <button name="addButton" id="newPage">새 페이지 만들기</button>
       `;
     }
   };
