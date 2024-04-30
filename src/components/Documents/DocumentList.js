@@ -41,8 +41,8 @@ export default function DocumentList({
                 isSelected ? "selected-item" : ""
               }">${doc.title.trim() === "" ? "제목 없음" : doc.title}</span>
               <div data-group-id=${doc.id} class="button-group">
-                <button name="addButton">+</button>
-                <button name="deleteButton">-</button>
+                <button name="addButton">➕</button>
+                <button name="deleteButton">➖</button>
               </div>
               ${
                 hasChildren

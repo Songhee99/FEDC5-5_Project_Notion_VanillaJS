@@ -24,6 +24,7 @@ li {
 
 .item {
   list-style: none;
+  margin: 1rem 0;
 }
 
 .item span:hover {
@@ -107,8 +108,12 @@ li {
   cursor: pointer;
   background-color: transparent;
   color: #37352f;
-  font-weight: bold;
-  font-size: large;
+}
+[name="addButton"]:hover,
+[name="deleteButton"]:hover {
+  background-color: #b0cfdf56;
+  border-radius: 50%;
+  padding: 0.25rem 0.4rem;
 }
 
 #newPage {
