@@ -79,6 +79,10 @@ li {
 }
 .toggle-button.has-children:hover::before {
   content: "﹥";
+  font-weight: bold;
+  background-color: #b0cfdf56;
+  border-radius: 50%;
+  padding: 0.5rem;
 }
 
 .editor-box div {
