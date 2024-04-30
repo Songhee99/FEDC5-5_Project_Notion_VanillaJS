@@ -12,8 +12,8 @@ export default function EditorPage({ $target, initialState, onEdit }) {
 
   this.render = () => {
     $editorPage.innerHTML = `
-      <input type="text" name="title" placeholder="제목을 입력하세요 😚" ></input>
-      <textarea name="content" placeholder="내용을 입력해보세요 🧚🏻‍♀️"></textarea>
+      <input type="text" name="title" placeholder="제목을 입력하세요 😚" spellcheck="false"></input>
+      <textarea name="content" placeholder="내용을 입력하세요 🧚🏻‍♀️" spellcheck="false"></textarea>
     `;
   };
 

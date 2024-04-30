@@ -23,10 +23,18 @@ li {
 }
 
 .item {
+  display: flex;
+  align-items: center;
   list-style: none;
   margin: 1rem 0;
 }
 
+.item span {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .item span:hover {
   opacity: 50%;
 }
@@ -37,13 +45,14 @@ li {
 
 .document-box {
   position: relative;
-  width: 18rem;
+  width: 18.5rem;
   min-height: 100vh;
   color: #37352f;
   background-color: #e0f2fb;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding-right: 2rem;
 }
 
 .reSize-handle {
@@ -95,11 +104,22 @@ li {
 }
 
 .editor-box div {
-  height: 42rem;
+  height: 80vh;
   color: #37352f;
 }
+
+.editor-box input,
+.editor-box textarea {
+  width: calc((100vw - 18.5rem) * 0.7);
+}
+
 .button-group {
-  display: inline-block;
+  display: flex;
+}
+
+.button-group button,
+.toggle-button {
+  flex-shrink: 0;
 }
 
 [name="addButton"],
@@ -107,7 +127,6 @@ li {
   border: none;
   cursor: pointer;
   background-color: transparent;
-  color: #37352f;
 }
 [name="addButton"]:hover,
 [name="deleteButton"]:hover {
@@ -163,5 +182,4 @@ li {
 [name="title"]:focus,
 [name="content"]:focus {
   outline: none;
-  text-decoration: underline;
 }
