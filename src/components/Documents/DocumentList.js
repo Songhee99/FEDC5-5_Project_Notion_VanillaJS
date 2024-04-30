@@ -30,15 +30,16 @@ export default function DocumentList({
         ${documentList
           .map((doc) => {
             const hasChildren = doc.documents && doc.documents.length > 0;
+            const isSelected = this.state.selectedDocumentId === doc.id;
             return `<li class="item" data-id=${doc.id}>
               <button name="toggleButton" data-id=${
                 doc.id
               } class="toggle-button${
               hasChildren ? " has-children" : " no-children"
             }"></button>
-              <span name="item-content">${
-                doc.title.trim() === "" ? "제목 없음" : doc.title
-              }</span>
+              <span name="item-content" class="${
+                isSelected ? "selected-item" : ""
+              }">${doc.title.trim() === "" ? "제목 없음" : doc.title}</span>
               <div data-group-id=${doc.id} class="button-group">
                 <button name="addButton">+</button>
                 <button name="deleteButton">-</button>
@@ -82,14 +83,21 @@ export default function DocumentList({
       case "addButton":
         this.setState({
           selectedDocument: this.state.selectedDocument.add(String(id)),
+          selectedDocumentId: id,
         });
         onCreate({ parent: id || null, title: "제목 없음" });
         break;
       case "deleteButton":
         onDelete({ id });
+        this.setState({
+          selectedDocumentId: null,
+        });
         break;
       case "item-content":
         push(`/documents/${id}`);
+        this.setState({
+          selectedDocumentId: id,
+        });
         break;
       case "toggleButton":
         const selectedDocument = this.state.selectedDocument;
@@ -98,7 +106,7 @@ export default function DocumentList({
         } else {
           selectedDocument.add(String(id));
         }
-        this.setState({ selectedDocument });
+        this.setState({ selectedDocument, selectedDocumentId: id });
         break;
       default:
         break;

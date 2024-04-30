@@ -13,7 +13,11 @@ export default function DocumentBox({ $target }) {
 
   const documentList = new DocumentList({
     $target: $documentBox,
-    initialState: { document: [], selectedDocument: new Set() },
+    initialState: {
+      document: [],
+      selectedDocument: new Set(),
+      selectedDocumentId: null,
+    },
 
     onCreate: async ({ parent, title }) => {
       await request("/documents", {

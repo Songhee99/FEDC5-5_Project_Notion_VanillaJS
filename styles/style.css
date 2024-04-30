@@ -65,6 +65,14 @@ li {
   display: none;
 }
 
+.selected-item {
+  font-weight: bold;
+}
+.item span.selected-item:hover {
+  opacity: 100%;
+  cursor: default;
+}
+
 .toggle-button {
   background: none;
   border: none;
