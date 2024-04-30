@@ -7,7 +7,7 @@ export default function DocumentList({
   onDelete,
 }) {
   const $documentListContainer = document.createElement("div");
-  $documentListContainer.className = "document-list-container"; // 스크롤을 위한 컨테이너
+  $documentListContainer.className = "document-list-container";
   $target.appendChild($documentListContainer);
 
   const $documentList = document.createElement("div");
@@ -30,6 +30,9 @@ export default function DocumentList({
         ${documentList
           .map((doc) => {
             return `<li class="item" data-id=${doc.id}>
+              <button name="toggleButton" data-id=${doc.id}>${
+              this.state.selectedDocument.has(String(doc.id)) ? "v" : ">"
+            }</button>
               <span name="item-content">${
                 doc.title.trim() === "" ? "제목 없음" : doc.title
               }</span>
@@ -37,16 +40,15 @@ export default function DocumentList({
                 <button name="addButton">+</button>
                 <button name="deleteButton">-</button>
               </div>
-            </li>
-            ${
-              doc.documents && doc.documents.length > 0
-                ? this.setDepth(
-                    doc.documents,
-                    !this.state.selectedDocument.has(`${doc.id}`)
-                  )
-                : ""
-            }
-            `;
+              ${
+                doc.documents && doc.documents.length > 0
+                  ? this.setDepth(
+                      doc.documents,
+                      !this.state.selectedDocument.has(String(doc.id))
+                    )
+                  : ""
+              }
+            </li>`;
           })
           .join("")}
       </ul>
@@ -71,12 +73,12 @@ export default function DocumentList({
   $documentList.addEventListener("click", (e) => {
     const { target } = e;
     const $li = target.closest("li");
-    const id = $li?.dataset.id;
+    const id = parseInt($li?.dataset.id, 10);
 
     switch (target.getAttribute("name")) {
       case "addButton":
         this.setState({
-          selectedDocument: this.state.selectedDocument.add(id),
+          selectedDocument: this.state.selectedDocument.add(String(id)),
         });
         onCreate({ parent: id || null, title: "제목 없음" });
         break;
@@ -84,14 +86,16 @@ export default function DocumentList({
         onDelete({ id });
         break;
       case "item-content":
+        push(`/documents/${id}`);
+        break;
+      case "toggleButton":
         const selectedDocument = this.state.selectedDocument;
-        if (selectedDocument.has(id)) {
-          selectedDocument.delete(id);
+        if (selectedDocument.has(String(id))) {
+          selectedDocument.delete(String(id));
         } else {
-          selectedDocument.add(id);
+          selectedDocument.add(String(id));
         }
         this.setState({ selectedDocument });
-        push(`/documents/${id}`);
         break;
       default:
         break;

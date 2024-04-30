@@ -23,7 +23,7 @@ li {
 }
 
 .item {
-  list-style: "> ";
+  list-style: none;
 }
 
 .item span:hover {
