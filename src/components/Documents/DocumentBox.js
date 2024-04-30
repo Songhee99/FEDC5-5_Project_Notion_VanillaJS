@@ -7,6 +7,10 @@ export default function DocumentBox({ $target }) {
   $documentBox.className = "document-box";
   $target.appendChild($documentBox);
 
+  const reSizeHandle = document.createElement("div");
+  reSizeHandle.className = "reSize-handle";
+  $documentBox.appendChild(reSizeHandle);
+
   const documentList = new DocumentList({
     $target: $documentBox,
     initialState: { document: [], selectedDocument: new Set() },
@@ -32,4 +36,23 @@ export default function DocumentBox({ $target }) {
     const documents = await request("/documents");
     documentList.setState({ document: documents });
   };
+
+  let isReSizing = false;
+  reSizeHandle.addEventListener("mousedown", function (e) {
+    isReSizing = true;
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", stopReSize);
+  });
+
+  function handleMouseMove(e) {
+    if (!isReSizing) return;
+    const newWidth = e.clientX;
+    $documentBox.style.width = `${newWidth}px`;
+  }
+
+  function stopReSize(e) {
+    isReSizing = false;
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", stopReSize);
+  }
 }

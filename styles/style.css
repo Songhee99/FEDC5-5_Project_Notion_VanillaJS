@@ -39,9 +39,22 @@ li {
   width: 18rem;
   min-height: 100vh;
   color: #37352f;
-  background-color: #b9dff46e;
+  background-color: #e0f2fb;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.reSize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 10px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.reSize-handle:hover {
+  background-color: #7a838726;
 }
 
 .document-list-container {
@@ -91,13 +104,13 @@ li {
   left: 50%;
   transform: translateX(-50%);
   bottom: 2rem;
-  background-color: #8acdf16e;
+  background-color: #bae2f7;
   padding: 0.7rem 1.1rem;
   border-radius: 0.5rem;
   font-size: medium;
 }
 #newPage:hover {
-  background-color: #6da1c06e;
+  background-color: #b0cfdf;
   cursor: pointer;
 }
 
