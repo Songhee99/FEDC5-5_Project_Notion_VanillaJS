@@ -29,10 +29,13 @@ export default function DocumentList({
       <ul class=${hide ? "hidden" : ""}>
         ${documentList
           .map((doc) => {
+            const hasChildren = doc.documents && doc.documents.length > 0;
             return `<li class="item" data-id=${doc.id}>
-              <button name="toggleButton" data-id=${doc.id}>${
-              this.state.selectedDocument.has(String(doc.id)) ? "v" : ">"
-            }</button>
+              <button name="toggleButton" data-id=${
+                doc.id
+              } class="toggle-button${
+              hasChildren ? " has-children" : " no-children"
+            }"></button>
               <span name="item-content">${
                 doc.title.trim() === "" ? "제목 없음" : doc.title
               }</span>
@@ -41,7 +44,7 @@ export default function DocumentList({
                 <button name="deleteButton">-</button>
               </div>
               ${
-                doc.documents && doc.documents.length > 0
+                hasChildren
                   ? this.setDepth(
                       doc.documents,
                       !this.state.selectedDocument.has(String(doc.id))
