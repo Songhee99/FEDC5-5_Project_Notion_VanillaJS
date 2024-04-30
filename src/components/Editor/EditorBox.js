@@ -48,11 +48,20 @@ export default function EditorBox({ $target, onChange }) {
 
     if (!id) {
       this.state = { id: "new" };
+      sessionStorage.removeItem("currentDocId");
       $editor.setState({ title: "", content: "" });
     } else {
       this.state = selectedDoc;
+      sessionStorage.setItem("currentDocId", id);
       const doc = await request(`/documents/${id}`);
       $editor.setState(doc);
+    }
+  };
+
+  window.onload = () => {
+    const savedDocId = sessionStorage.getItem("currentDocId");
+    if (savedDocId) {
+      this.setState({ id: savedDocId });
     }
   };
 }
