@@ -1,5 +1,10 @@
 import { push } from "../../utils/router.js";
-import { DeleteButton, ToggleButton, NewPageButton } from "./Buttons.js";
+import {
+  AddButton,
+  DeleteButton,
+  ToggleButton,
+  NewPageButton,
+} from "./Buttons.js";
 
 export default function DocumentList({
   $target,
@@ -51,8 +56,13 @@ export default function DocumentList({
 
       const $buttonGroup = document.createElement("div");
       $buttonGroup.className = "button-group";
-      $buttonGroup.innerHTML = `<button name="addButton">➕</button>`;
       $li.appendChild($buttonGroup);
+
+      AddButton({
+        $target: $buttonGroup,
+        docId: doc.id,
+        onCreate,
+      });
 
       DeleteButton({
         $target: $buttonGroup,

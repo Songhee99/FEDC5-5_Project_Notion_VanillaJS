@@ -1,3 +1,15 @@
+function AddButton({ $target, docId, onCreate }) {
+  const $addButton = document.createElement("button");
+  $addButton.name = "addButton";
+  $addButton.textContent = "➕";
+  $target.appendChild($addButton);
+
+  $addButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    onCreate({ parent: docId, title: "제목 없음" });
+  });
+}
+
 function DeleteButton({ $target }) {
   const $deleteButton = document.createElement("button");
   $deleteButton.name = "deleteButton";
@@ -35,4 +47,4 @@ function NewPageButton({ $target, onCreate }) {
   });
 }
 
-export { DeleteButton, ToggleButton, NewPageButton };
+export { AddButton, DeleteButton, ToggleButton, NewPageButton };
