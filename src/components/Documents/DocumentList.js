@@ -1,5 +1,4 @@
 import { push } from "../../utils/router.js";
-// import NewPageButton from "./NewPageButton.js";
 import { DeleteButton, ToggleButton, NewPageButton } from "./Buttons.js";
 
 export default function DocumentList({
@@ -44,7 +43,9 @@ export default function DocumentList({
 
       const $span = document.createElement("span");
       $span.name = "item-content";
-      $span.className = "document-title";
+      $span.className =
+        "document-title" +
+        (this.state.selectedDocumentId === doc.id ? " selected-item" : "");
       $span.textContent = doc.title.trim() === "" ? "제목 없음" : doc.title;
       $li.appendChild($span);
 
@@ -55,6 +56,8 @@ export default function DocumentList({
 
       DeleteButton({
         $target: $buttonGroup,
+        docId: doc.id,
+        onDelete,
       });
 
       if (doc.documents && doc.documents.length > 0) {
@@ -79,7 +82,7 @@ export default function DocumentList({
     } else {
       selectedDocument.add(String(id));
     }
-    this.setState({ selectedDocument });
+    this.setState({ selectedDocumentId: id });
   };
 
   this.render = () => {
@@ -109,6 +112,7 @@ export default function DocumentList({
         break;
       case "item-content":
         push(`/documents/${id}`);
+        this.setState({ selectedDocumentId: id });
         break;
     }
   });
