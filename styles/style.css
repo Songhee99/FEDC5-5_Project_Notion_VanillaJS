@@ -55,15 +55,15 @@ li {
   padding-right: 2rem;
 }
 
-.reSize-handle {
+.resize-handle {
   position: absolute;
   right: 0;
   top: 0;
-  width: 10px;
+  width: 0.62rem;
   height: 100%;
   cursor: ew-resize;
 }
-.reSize-handle:hover {
+.resize-handle:hover {
   background-color: #7a838726;
 }
 

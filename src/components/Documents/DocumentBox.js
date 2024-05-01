@@ -1,15 +1,19 @@
 import { request } from "../../utils/request.js";
 import { push } from "../../utils/router.js";
 import DocumentList from "./DocumentList.js";
+import ResizeHandle from "./ResizeHandle.js";
 
 export default function DocumentBox({ $target }) {
   const $documentBox = document.createElement("div");
   $documentBox.className = "document-box";
   $target.appendChild($documentBox);
 
-  const reSizeHandle = document.createElement("div");
-  reSizeHandle.className = "reSize-handle";
-  $documentBox.appendChild(reSizeHandle);
+  new ResizeHandle({
+    $target: $documentBox,
+    onResize: (newWidth) => {
+      $documentBox.style.width = `${newWidth * 0.0625}rem`;
+    },
+  });
 
   const documentList = new DocumentList({
     $target: $documentBox,
@@ -40,23 +44,4 @@ export default function DocumentBox({ $target }) {
     const documents = await request("/documents");
     documentList.setState({ document: documents });
   };
-
-  let isReSizing = false;
-  reSizeHandle.addEventListener("mousedown", function (e) {
-    isReSizing = true;
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", stopReSize);
-  });
-
-  function handleMouseMove(e) {
-    if (!isReSizing) return;
-    const newWidth = e.clientX;
-    $documentBox.style.width = `${newWidth}px`;
-  }
-
-  function stopReSize(e) {
-    isReSizing = false;
-    document.removeEventListener("mousemove", handleMouseMove);
-    document.removeEventListener("mouseup", stopReSize);
-  }
 }
