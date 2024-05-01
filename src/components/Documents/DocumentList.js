@@ -1,4 +1,6 @@
 import { push } from "../../utils/router.js";
+// import NewPageButton from "./NewPageButton.js";
+import { DeleteButton, ToggleButton, NewPageButton } from "./Buttons.js";
 
 export default function DocumentList({
   $target,
@@ -25,90 +27,88 @@ export default function DocumentList({
   };
 
   this.setDepth = (documentList, hide = false) => {
-    const depth = `
-      <ul class=${hide ? "hidden" : ""}>
-        ${documentList
-          .map((doc) => {
-            const hasChildren = doc.documents && doc.documents.length > 0;
-            const isSelected = this.state.selectedDocumentId === doc.id;
-            return `<li class="item" data-id=${doc.id}>
-              <button name="toggleButton" data-id=${
-                doc.id
-              } class="toggle-button${
-              hasChildren ? " has-children" : " no-children"
-            }"></button>
-              <span name="item-content" class="${
-                isSelected ? "selected-item" : ""
-              }">${doc.title.trim() === "" ? "제목 없음" : doc.title}</span>
-              <div data-group-id=${doc.id} class="button-group">
-                <button name="addButton">➕</button>
-                <button name="deleteButton">➖</button>
-              </div>
-              ${
-                hasChildren
-                  ? this.setDepth(
-                      doc.documents,
-                      !this.state.selectedDocument.has(String(doc.id))
-                    )
-                  : ""
-              }
-            </li>`;
-          })
-          .join("")}
-      </ul>
-    `;
-    return depth;
+    const $ul = document.createElement("ul");
+    $ul.className = hide ? "hidden" : "";
+
+    documentList.forEach((doc) => {
+      const $li = document.createElement("li");
+      $li.className = "item";
+      $li.dataset.id = doc.id;
+
+      ToggleButton({
+        $target: $li,
+        docId: doc.id,
+        hasChildren: doc.documents && doc.documents.length > 0,
+        onToggle: (id) => this.handleToggle(id),
+      });
+
+      const $span = document.createElement("span");
+      $span.name = "item-content";
+      $span.className = "document-title";
+      $span.textContent = doc.title.trim() === "" ? "제목 없음" : doc.title;
+      $li.appendChild($span);
+
+      const $buttonGroup = document.createElement("div");
+      $buttonGroup.className = "button-group";
+      $buttonGroup.innerHTML = `<button name="addButton">➕</button>`;
+      $li.appendChild($buttonGroup);
+
+      DeleteButton({
+        $target: $buttonGroup,
+      });
+
+      if (doc.documents && doc.documents.length > 0) {
+        $li.appendChild(
+          this.setDepth(
+            doc.documents,
+            !this.state.selectedDocument.has(String(doc.id))
+          )
+        );
+      }
+
+      $ul.appendChild($li);
+    });
+
+    return $ul;
+  };
+
+  this.handleToggle = (id) => {
+    const selectedDocument = this.state.selectedDocument;
+    if (selectedDocument.has(String(id))) {
+      selectedDocument.delete(String(id));
+    } else {
+      selectedDocument.add(String(id));
+    }
+    this.setState({ selectedDocument });
   };
 
   this.render = () => {
     $documentList.innerHTML = "";
     if (this.state.document && this.state.document.length > 0) {
-      $documentList.innerHTML =
-        this.setDepth(this.state.document) +
-        `<button name="addButton" id="newPage">새 페이지 만들기</button>`;
+      $documentList.appendChild(this.setDepth(this.state.document));
     } else {
-      $documentList.innerHTML = `
-        <span id="emptyPage">페이지가 없어요 😢</span>
-        <button name="addButton" id="newPage">새 페이지 만들기</button>
-      `;
+      $documentList.innerHTML = `<span id="emptyPage">페이지가 없어요 😢</span>`;
     }
+    new NewPageButton({
+      $target: $documentList,
+      onCreate,
+    });
   };
 
   $documentList.addEventListener("click", (e) => {
-    const { target } = e;
+    const target = e.target;
     const $li = target.closest("li");
     const id = parseInt($li?.dataset.id, 10);
 
-    switch (target.getAttribute("name")) {
+    switch (target.name) {
       case "addButton":
-        this.setState({
-          selectedDocument: this.state.selectedDocument.add(String(id)),
-          selectedDocumentId: id,
-        });
         onCreate({ parent: id || null, title: "제목 없음" });
         break;
       case "deleteButton":
         onDelete({ id });
-        this.setState({
-          selectedDocumentId: null,
-        });
         break;
       case "item-content":
         push(`/documents/${id}`);
-        this.setState({
-          selectedDocumentId: id,
-        });
-        break;
-      case "toggleButton":
-        const selectedDocument = this.state.selectedDocument;
-        if (selectedDocument.has(String(id))) {
-          selectedDocument.delete(String(id));
-        } else {
-          selectedDocument.add(String(id));
-        }
-        this.setState({ selectedDocument, selectedDocumentId: id });
-        break;
-      default:
         break;
     }
   });
