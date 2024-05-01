@@ -22,7 +22,8 @@ function ToggleButton({ $target, docId, hasChildren, onToggle }) {
   const $toggleButton = document.createElement("button");
   $toggleButton.name = "toggleButton";
   $toggleButton.dataset.id = docId;
-  $toggleButton.className = "toggle-button";
+  $toggleButton.className =
+    "toggle-button" + (hasChildren ? " has-children" : "");
   $toggleButton.textContent = hasChildren ? "📂" : "📄";
 
   $toggleButton.addEventListener("click", (e) => {

@@ -86,7 +86,6 @@ li {
 .toggle-button {
   background: none;
   border: none;
-  cursor: pointer;
   font-size: inherit;
 }
 .toggle-button.has-children:hover::before {
@@ -95,6 +94,7 @@ li {
   background-color: #b0cfdf56;
   border-radius: 50%;
   padding: 0.5rem;
+  cursor: pointer;
 }
 
 .editor-box div {
