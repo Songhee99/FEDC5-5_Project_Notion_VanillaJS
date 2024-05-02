@@ -1,12 +1,17 @@
+import { push } from "../../utils/router.js";
+
 function AddButton({ $target, docId, onCreate }) {
   const $addButton = document.createElement("button");
   $addButton.name = "addButton";
   $addButton.textContent = "➕";
   $target.appendChild($addButton);
 
-  $addButton.addEventListener("click", (event) => {
+  $addButton.addEventListener("click", async (event) => {
     event.stopPropagation();
-    onCreate({ parent: docId, title: "제목 없음" });
+    const newDoc = await onCreate({ parent: docId, title: "제목 없음" });
+    if (newDoc && newDoc.id) {
+      push(`/documents/${newDoc.id}`);
+    }
   });
 }
 
@@ -42,9 +47,12 @@ function NewPageButton({ $target, onCreate }) {
 
   $target.appendChild($newPageButton);
 
-  $newPageButton.addEventListener("click", (e) => {
+  $newPageButton.addEventListener("click", async (e) => {
     e.stopPropagation();
-    onCreate({ parent: null, title: "제목 없음" });
+    const newDoc = await onCreate({ parent: null, title: "제목 없음" });
+    if (newDoc && newDoc.id) {
+      push(`/documents/${newDoc.id}`);
+    }
   });
 }
 

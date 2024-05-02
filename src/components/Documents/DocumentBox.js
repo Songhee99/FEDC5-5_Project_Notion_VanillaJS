@@ -24,11 +24,16 @@ export default function DocumentBox({ $target }) {
     },
 
     onCreate: async ({ parent, title }) => {
-      await request("/documents", {
+      const newDoc = await request("/documents", {
         method: "POST",
         body: JSON.stringify({ parent, title }),
       });
       this.fetchDocuments();
+      if (newDoc && newDoc.id) {
+        documentList.setState({ selectedDocumentId: newDoc.id });
+        push(`/documents/${newDoc.id}`);
+      }
+      return newDoc;
     },
 
     onDelete: async ({ id }) => {
