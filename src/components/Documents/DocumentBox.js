@@ -28,11 +28,17 @@ export default function DocumentBox({ $target }) {
         method: "POST",
         body: JSON.stringify({ parent, title }),
       });
-      this.fetchDocuments();
       if (newDoc && newDoc.id) {
+        if (
+          parent &&
+          !documentList.state.selectedDocument.has(String(parent))
+        ) {
+          documentList.state.selectedDocument.add(String(parent));
+        }
         documentList.setState({ selectedDocumentId: newDoc.id });
         push(`/documents/${newDoc.id}`);
       }
+      this.fetchDocuments();
       return newDoc;
     },
 
@@ -49,4 +55,6 @@ export default function DocumentBox({ $target }) {
     const documents = await request("/documents");
     documentList.setState({ document: documents });
   };
+
+  this.fetchDocuments();
 }
