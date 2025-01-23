@@ -1,6 +1,15 @@
+html,
 body {
-  padding: 0;
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
 }
 
 .hidden {
@@ -14,9 +23,18 @@ li {
 }
 
 .item {
-  list-style: "> ";
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 1rem 0;
 }
 
+.item span {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .item span:hover {
   opacity: 50%;
 }
@@ -26,19 +44,76 @@ li {
 }
 
 .document-box {
-  padding: 0.7rem 0.05rem;
-  width: 17rem;
-  height: 42.7rem;
+  position: relative;
+  width: 18.5rem;
+  min-height: 100vh;
   color: #37352f;
-  background-color: #b9dff46e;
+  background-color: #e0f2fb;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-right: 2rem;
+}
+
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0.62rem;
+  height: 100%;
+  cursor: ew-resize;
+}
+.resize-handle:hover {
+  background-color: #7a838726;
+}
+
+.document-list-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 6rem);
+}
+.document-list-container::-webkit-scrollbar {
+  display: none;
+}
+
+.selected-item {
+  font-weight: bold;
+}
+.item span.selected-item:hover {
+  opacity: 100%;
+  cursor: default;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  font-size: inherit;
+}
+.toggle-button.has-children:hover::before {
+  content: "﹥";
+  font-weight: bold;
+  background-color: #b0cfdf56;
+  border-radius: 50%;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
 .editor-box div {
-  height: 42rem;
+  height: 80vh;
   color: #37352f;
 }
+
+.editor-box input,
+.editor-box textarea {
+  width: calc((100vw - 18.5rem) * 0.7);
+}
+
 .button-group {
-  display: inline-block;
+  display: flex;
+}
+
+.button-group button,
+.toggle-button {
+  flex-shrink: 0;
 }
 
 [name="addButton"],
@@ -46,19 +121,27 @@ li {
   border: none;
   cursor: pointer;
   background-color: transparent;
-  color: #37352f;
-  font-weight: bold;
-  font-size: large;
+}
+[name="addButton"]:hover,
+[name="deleteButton"]:hover {
+  background-color: #b0cfdf56;
+  border-radius: 50%;
+  padding: 0.25rem 0.4rem;
 }
 
 #newPage {
-  position: fixed;
-  left: 3rem;
-  bottom: 3rem;
-  background-color: #8acdf16e;
-  padding: 0.5rem 2rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 2rem;
+  background-color: #bae2f7;
+  padding: 0.7rem 1.1rem;
   border-radius: 0.5rem;
   font-size: medium;
+}
+#newPage:hover {
+  background-color: #b0cfdf;
+  cursor: pointer;
 }
 
 #emptyPage {
@@ -73,19 +156,19 @@ li {
 [name="content"] {
   width: 150%;
   display: block;
-  padding-left: 8rem;
+  margin-left: 8rem;
   border: none;
 }
 
 [name="title"] {
-  padding-top: 7rem;
+  margin-top: 6rem;
   height: 5rem;
   font-size: xx-large;
   font-weight: bold;
 }
 
 [name="content"] {
-  padding-top: 1rem;
+  margin-top: 1rem;
   height: 80%;
   font-size: large;
 }
@@ -93,5 +176,4 @@ li {
 [name="title"]:focus,
 [name="content"]:focus {
   outline: none;
-  text-decoration: underline;
 }
